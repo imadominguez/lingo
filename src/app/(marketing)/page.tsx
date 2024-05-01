@@ -1,28 +1,67 @@
+"use client";
 import { Button } from "@/components/ui/button";
+import {
+  ClerkLoaded,
+  ClerkLoading,
+  SignInButton,
+  SignOutButton,
+  SignUpButton,
+  SignedIn,
+  SignedOut,
+} from "@clerk/nextjs";
+import { Loader } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="flex flex-col mx-auto max-w-48 gap-y-2 py-4">
+    <div className="max-w-[988px] mx-auto flex-1 w-full flex flex-col lg:flex-row items-center justify-center p-4 gap-2">
+      <div className="relative w-[240px] h-[240px] lg:w-[424px] lg:h-[424px] mb-8 lg:mb-0">
+        <Image src={"/hero.svg"} alt="Hero" width={1000} height={1000} />
+      </div>
+      <div className="flex flex-col items-center gap-y-8">
+        <h1 className="text-xl lg:text-3xl font-bold text-neutral-600 max-w-[480px] text-center">
+          Learn, practice, and master new languages with Lingo.
+        </h1>
+        <div className="flex flex-col items-center gap-y-3 max-w-[330px] w-full ">
+          <ClerkLoading>
+            <Loader className="w-5 h-5" />
+          </ClerkLoading>
+          <ClerkLoaded>
+            <SignedOut>
+              <SignUpButton
+                mode="modal"
+                fallbackRedirectUrl={"/learn"}
+                signInFallbackRedirectUrl={"/learn"}
+              >
+                <Button size={"lg"} variant={"secondary"} className="w-full">
+                  Get Started.
+                </Button>
+              </SignUpButton>
 
-      <Button>Default</Button>
-      <Button variant={"primary"}>Primary</Button>
-      <Button variant={"primaryOutline"}>Primary Outline</Button>
-    
+              <SignInButton
+                mode="modal"
+                fallbackRedirectUrl={"/learn"}
+                signUpFallbackRedirectUrl={"/learn"}
+              >
+                <Button
+                  size={"lg"}
+                  variant={"primaryOutline"}
+                  className="w-full"
+                >
+                  I already have an account
+                </Button>
+              </SignInButton>
+            </SignedOut>
 
-      <Button variant={"secondary"}>Secondary</Button>
-      <Button variant={"secondaryOutline"}>Secondary Outline</Button>
-
-      <Button variant={"danger"}>danger</Button>
-      <Button variant={"dangerOutline"}>danger Outline</Button>
-
-      <Button variant={"super"}>super</Button>
-      <Button variant={"superOutline"}>super Outline</Button>
-
-      <Button variant={"ghost"}>ghost Outline</Button>
-
-      <Button variant={"sidebar"}>sidebar</Button>
-      <Button variant={"sidebarOutline"}>sidebar Outline</Button>
-
-    </div>    
+            <SignedIn>
+              <Button size={"lg"} variant={"secondary"} asChild>
+                <Link href={"/learn"}>Continue learning.</Link>
+              </Button>
+            </SignedIn>
+          </ClerkLoaded>
+        </div>
+      </div>
+    </div>
   );
 }
